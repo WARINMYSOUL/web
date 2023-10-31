@@ -1,47 +1,61 @@
-from socket import *
 import tkinter as tk
 import threading
 from PIL import ImageTk, Image
+from socket import *
 
 
-def change_image():
-    global image_index, lab
-    image_index = (image_index + 1) % len(images)
-    image = images[image_index]
-    lab.configure(image=image)
-    lab.image = image
+class AXEPapichAXE:
+    def __init__(self):
+        self.win = tk.Tk()
+        self.win.title('AXEpapichAXE')
+        self.win.geometry("256x256+150+80")
+        self.win.config(bg='#C45B90')
+        self.win.minsize(1024, 512)
+
+        self.images = [ImageTk.PhotoImage(Image.open(f"images/axe{i}.jpg")) for i in range(1, 35)]
+        self.image_index = 0
+
+        self.frame = None
+        self.lab = None
+
+        self.setup_ui()
+        self.start_server()
+
+    def setup_ui(self):
+        self.frame = tk.Frame(self.win, bg='#C45B90')
+        self.frame.pack(fill=tk.BOTH, expand=True)
+
+        self.lab = tk.Label(self.frame, image=self.images[0])
+        self.lab.pack(pady=20)
+
+        self.win.protocol("WM_DELETE_WINDOW", self.finish)
+
+    def change_image(self):
+        self.image_index = (self.image_index + 1) % len(self.images)
+        self.lab.configure(image=self.images[self.image_index])
+
+    def start_server(self):
+        new_thread = threading.Thread(target=self._server_thread)
+        new_thread.start()
+
+    def _server_thread(self):
+        server = socket(AF_INET, SOCK_STREAM)
+        server.bind(("192.168.1.2", 6842))
+        server.listen()
+        user, addr = server.accept()
+        while True:
+            data = user.recv(1)
+            if not data:
+                break
+            self.change_image()
+
+    def finish(self):
+        self.win.destroy()
+
+    def run(self):
+        self.win.mainloop()
 
 
-def start_server():
-    server = socket(AF_INET, SOCK_STREAM)
-    server.bind(("192.168.115.73", 6834))
-    server.listen()
-    user, addr = server.accept()
-    while True:
-        data = user.recv(1)
-        if not data:
-            break
-        change_image()
-
-
-def finish():
-    win.destroy()
-
-
-new_thread = threading.Thread(target=start_server)
-new_thread.start()
-win = tk.Tk()
-win.title('POPcatPOP')
-win.geometry("256x256+150+80")
-win.config(bg='#C45B90')
-win.minsize(256, 256)
-img = ImageTk.PhotoImage(Image.open("images/pop1.png"))
-lab = tk.Label(win, image=img)
-lab.pack()
-images = [
-    ImageTk.PhotoImage(Image.open("images/pop1.png")),
-    ImageTk.PhotoImage(Image.open("images/pop2.png")),
-]
-image_index = 0
-win.protocol("WM_DELETE_WINDOW", finish)
-win.mainloop()
+if __name__ == "__main__":
+    app = AXEPapichAXE()
+    app.run()

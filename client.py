@@ -2,21 +2,35 @@ import tkinter as tk
 from socket import *
 
 
-def click():
-    client.send(bytes("\00", 'ascii'))
+class AXEPapichClientApp:
+    def __init__(self):
+        self.win = tk.Tk()
+        self.win.title('AXEpapich')
+        self.win.geometry("500x300+400+300")
+        self.win.config(bg='#C45B90')
+
+        self.client = socket(AF_INET, SOCK_STREAM)
+        self.client.connect(("192.168.1.2", 6842))
+
+        self.setup_ui()
+
+    def setup_ui(self):
+        btn = tk.Button(self.win, text='AXE', font="Arial 40", width=5, height=2, command=self.click)
+        btn.place(relx=0.5, rely=0.5, anchor='center')
+
+        self.win.protocol("WM_DELETE_WINDOW", self.finish)
+
+    def click(self):
+        self.client.send(bytes("\00", 'ascii'))
+
+    def finish(self):
+        self.win.destroy()
+        self.client.close()
+
+    def run(self):
+        self.win.mainloop()
 
 
-def finish():
-    win.destroy()
-
-
-win = tk.Tk()
-win.title('POPcat')
-win.geometry("500x300+400+300")
-win.config(bg='#C45B90')
-btn = tk.Button(win, text='POP', font="Arial 40", width=5, height=2, command=click)
-btn.place(relx=0.5, rely=0.5, anchor='center')
-client = socket(AF_INET, SOCK_STREAM)
-client.connect(("192.168.115.73", 6843))
-win.mainloop()
-client.close()
+if __name__ == "__main__":
+    app = AXEPapichClientApp()
+    app.run()
