@@ -1,6 +1,6 @@
 import tkinter as tk
 from socket import *
-import keyboard
+
 
 
 class AXEPapichClientApp:
