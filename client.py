@@ -2,7 +2,6 @@ import tkinter as tk
 from socket import *
 
 
-
 class AXEPapichClientApp:
     def __init__(self):
         self.win = tk.Tk()
