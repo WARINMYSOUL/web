@@ -1,5 +1,6 @@
 import tkinter as tk
 from socket import *
+import keyboard
 
 
 class AXEPapichClientApp:
@@ -7,7 +8,7 @@ class AXEPapichClientApp:
         self.win = tk.Tk()
         self.win.title('AXEpapich')
         self.win.geometry("500x300+400+300")
-        self.win.config(bg='#C45B90')
+        self.win.config(bg='#800000')
 
         self.client = socket(AF_INET, SOCK_STREAM)
         self.client.connect(("192.168.1.2", 6842))

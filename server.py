@@ -9,8 +9,8 @@ class AXEPapichAXE:
         self.win = tk.Tk()
         self.win.title('AXEpapichAXE')
         self.win.geometry("256x256+150+80")
-        self.win.config(bg='#C45B90')
-        self.win.minsize(1024, 512)
+        self.win.config(bg='#800000')
+        self.win.minsize(512, 294)
 
         self.images = [ImageTk.PhotoImage(Image.open(f"images/axe{i}.jpg")) for i in range(1, 35)]
         self.image_index = 0
@@ -22,7 +22,7 @@ class AXEPapichAXE:
         self.start_server()
 
     def setup_ui(self):
-        self.frame = tk.Frame(self.win, bg='#C45B90')
+        self.frame = tk.Frame(self.win, bg='#800000')
         self.frame.pack(fill=tk.BOTH, expand=True)
 
         self.lab = tk.Label(self.frame, image=self.images[0])
