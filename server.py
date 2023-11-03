@@ -40,9 +40,11 @@ class AXEPapichAXE:
 
     def _server_thread(self):
         server = socket(AF_INET, SOCK_STREAM)
-        server.bind(("192.168.1.2", 6842))
+        server.bind(("192.168.26.73", 6842))
         server.listen()
+
         user, addr = server.accept()
+
         while True:
             data = user.recv(1)
             if not data:
